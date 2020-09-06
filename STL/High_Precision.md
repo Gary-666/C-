@@ -346,189 +346,191 @@ int main(){
       }
       ```
 10. **高精度开平方**
+
     ```C++
-   #include<cstdio>
-   #include<cstring>
-   #include<string>
-   #include<cmath>
-   #include<algorithm>
-   using namespace std;
-   int a[6666],b[6666],ans[6666],t[6666],l[6666],r[6666],mid[6666];
-   char s1[6666],s2[6666];
-   
-   int compare(int a[],int b[]){
-      if(a[0]>b[0]) return 0;
-      if(a[0]<b[0]) return 1;
-      for(int i=a[0];i>0;i--){
-         if(a[i]>b[i]) return 0;
-         if(a[i]<b[i]) return 1;
-      }
-      return 1;
-   }
-   
-   void add(){
-      mid[0]=max(l[0],r[0]);
-      for(int i=1;i<=mid[0];i++) mid[i]=l[i]+r[i];
-      while(mid[mid[0]+1]>0) mid[0]++;
-      for(int i=1;i<=mid[0];i++){
-         mid[i+1]+=mid[i]/10;
-         mid[i]%=10;
-      }
-      while(mid[mid[0]+1]>0) mid[0]++;
-   }
-   
-   void times(){
-      memset(t,0,sizeof(t));
-      t[0]=mid[0]+mid[0]-1;
-      for(int i=1;i<=mid[0];i++){
-         for(int j=1;j<=mid[0];j++){
-               t[i+j-1]+=mid[i]*mid[j];
-               t[i+j]+=t[i+j-1]/10;
-               t[i+j-1]%=10;
+      #include<cstdio>
+      #include<cstring>
+      #include<string>
+      #include<cmath>
+      #include<algorithm>
+      using namespace std;
+      int a[6666],b[6666],ans[6666],t[6666],l[6666],r[6666],mid[6666];
+      char s1[6666],s2[6666];
+      
+      int compare(int a[],int b[]){
+         if(a[0]>b[0]) return 0;
+         if(a[0]<b[0]) return 1;
+         for(int i=a[0];i>0;i--){
+            if(a[i]>b[i]) return 0;
+            if(a[i]<b[i]) return 1;
          }
+         return 1;
       }
-      while(t[t[0]+1]>0) t[0]++;
-   }
-   
-   void div(){
-      int r=0;
-      for(int i=mid[0];i>0;i--){
-         r=r*10+mid[i];
-         mid[i]=r/2;
-         r%=2;
-      }
-      while(mid[mid[0]]==0) mid[0]--;
-   }
-   
-   void left(){
-      for(int i=0;i<=mid[0];i++) l[i]=ans[i]=mid[i];
-      l[1]++;
-      for(int i=1;i<=l[0];i++){
-         l[i+1]+=l[i]/10;
-         l[i]%=10;
-      }
-   }
-   
-   void right(){
-      for(int i=0;i<=mid[0];i++) r[i]=mid[i];
-      r[1]--;
-      for(int i=1;i<=r[0];i++){
-         if(r[i]<0){
-               r[i+1]--;
-               r[i]+=10;
+      
+      void add(){
+         mid[0]=max(l[0],r[0]);
+         for(int i=1;i<=mid[0];i++) mid[i]=l[i]+r[i];
+         while(mid[mid[0]+1]>0) mid[0]++;
+         for(int i=1;i<=mid[0];i++){
+            mid[i+1]+=mid[i]/10;
+            mid[i]%=10;
          }
+         while(mid[mid[0]+1]>0) mid[0]++;
       }
-   }
-   
-   int main(){
-      scanf("%s",s1+1);
-      a[0]=r[0]=strlen(s1+1);
-      for(int i=1;i<=a[0];i++) a[i]=r[i]=s1[a[0]-i+1]-'0';
-      l[0]=ans[0]=1;
-      while(compare(l,r)){
-         add();
-         div();
-         times();
-         if(compare(t,a)) left();
-         else right();
-      }
-      for(int i=ans[0];i>0;i--) printf("%d",ans[i]);
-      return 0;
-   }
-    ```
-11. **高精度开n次方**
-    ```C++
-   #include<cstdio>
-   #include<cstring>
-   #include<string>
-   #include<cmath>
-   #include<algorithm>
-   using namespace std;
-   int n,a[6666],b[6666],ans[6666],t[6666],l[6666],r[6666],mid[6666];
-   char s1[6666];
-   
-   int compare(int a[],int b[]){
-      if(a[0]>b[0]) return 0;
-      if(a[0]<b[0]) return 1;
-      for(int i=a[0];i>0;i--){
-         if(a[i]>b[i]) return 0;
-         if(a[i]<b[i]) return 1;
-      }
-      return 1;
-   }
-   
-   void add(){
-      mid[0]=max(l[0],r[0]);
-      for(int i=1;i<=mid[0];i++) mid[i]=l[i]+r[i];
-      while(mid[mid[0]+1]>0) mid[0]++;
-      for(int i=1;i<=mid[0];i++){
-         mid[i+1]+=mid[i]/10;
-         mid[i]%=10;
-      }
-      while(mid[mid[0]+1]>0) mid[0]++;
-   }
-   
-   void times(){
-      for(int i=0;i<=mid[0];i++) b[i]=mid[i];
-      for(int k=1;k<=n-1;k++){
+      
+      void times(){
          memset(t,0,sizeof(t));
-         t[0]=b[0]+mid[0]-1;
-         for(int i=1;i<=b[0];i++){
-               for(int j=1;j<=mid[0];j++){
-                  t[i+j-1]+=b[i]*mid[j];
+         t[0]=mid[0]+mid[0]-1;
+         for(int i=1;i<=mid[0];i++){
+            for(int j=1;j<=mid[0];j++){
+                  t[i+j-1]+=mid[i]*mid[j];
                   t[i+j]+=t[i+j-1]/10;
                   t[i+j-1]%=10;
-               }
+            }
          }
          while(t[t[0]+1]>0) t[0]++;
-         for(int i=0;i<=t[0];i++) b[i]=t[i];
       }
-   }
-   
-   void div(){
-      int r=0;
-      for(int i=mid[0];i>0;i--){
-         r=r*10+mid[i];
-         mid[i]=r/2;
-         r%=2;
+      
+      void div(){
+         int r=0;
+         for(int i=mid[0];i>0;i--){
+            r=r*10+mid[i];
+            mid[i]=r/2;
+            r%=2;
+         }
+         while(mid[mid[0]]==0) mid[0]--;
       }
-      while(mid[mid[0]]==0) mid[0]--;
-   }
-   
-   void left(){
-      for(int i=0;i<=mid[0];i++) l[i]=ans[i]=mid[i];
-      l[1]++;
-      for(int i=1;i<=l[0];i++){
-         l[i+1]+=l[i]/10;
-         l[i]%=10;
-      }
-   }
-   
-   void right(){
-      for(int i=0;i<=mid[0];i++) r[i]=mid[i];
-      r[1]--;
-      for(int i=1;i<=r[0];i++){
-         if(r[i]<0){
-               r[i+1]--;			
-               r[i]+=10;
+      
+      void left(){
+         for(int i=0;i<=mid[0];i++) l[i]=ans[i]=mid[i];
+         l[1]++;
+         for(int i=1;i<=l[0];i++){
+            l[i+1]+=l[i]/10;
+            l[i]%=10;
          }
       }
-   }
-   
-   int main(){
-      scanf("%d\n",&n);
-      scanf("%s",s1+1);
-      a[0]=r[0]=strlen(s1+1);
-      for(int i=1;i<=a[0];i++) a[i]=r[i]=s1[a[0]-i+1]-'0';
-      l[0]=ans[0]=1;
-      while(compare(l,r)){
-         add();
-         div();
-         times();
-         if(compare(t,a)) left();
-         else right();
+      
+      void right(){
+         for(int i=0;i<=mid[0];i++) r[i]=mid[i];
+         r[1]--;
+         for(int i=1;i<=r[0];i++){
+            if(r[i]<0){
+                  r[i+1]--;
+                  r[i]+=10;
+            }
+         }
       }
-      for(int i=ans[0];i>0;i--) printf("%d",ans[i]);
-      return 0;
-   }
+      
+      int main(){
+         scanf("%s",s1+1);
+         a[0]=r[0]=strlen(s1+1);
+         for(int i=1;i<=a[0];i++) a[i]=r[i]=s1[a[0]-i+1]-'0';
+         l[0]=ans[0]=1;
+         while(compare(l,r)){
+            add();
+            div();
+            times();
+            if(compare(t,a)) left();
+            else right();
+         }
+         for(int i=ans[0];i>0;i--) printf("%d",ans[i]);
+         return 0;
+      }
+    ```
+11. **高精度开n次方**
+
+    ```C++
+      #include<cstdio>
+      #include<cstring>
+      #include<string>
+      #include<cmath>
+      #include<algorithm>
+      using namespace std;
+      int n,a[6666],b[6666],ans[6666],t[6666],l[6666],r[6666],mid[6666];
+      char s1[6666];
+      
+      int compare(int a[],int b[]){
+         if(a[0]>b[0]) return 0;
+         if(a[0]<b[0]) return 1;
+         for(int i=a[0];i>0;i--){
+            if(a[i]>b[i]) return 0;
+            if(a[i]<b[i]) return 1;
+         }
+         return 1;
+      }
+      
+      void add(){
+         mid[0]=max(l[0],r[0]);
+         for(int i=1;i<=mid[0];i++) mid[i]=l[i]+r[i];
+         while(mid[mid[0]+1]>0) mid[0]++;
+         for(int i=1;i<=mid[0];i++){
+            mid[i+1]+=mid[i]/10;
+            mid[i]%=10;
+         }
+         while(mid[mid[0]+1]>0) mid[0]++;
+      }
+      
+      void times(){
+         for(int i=0;i<=mid[0];i++) b[i]=mid[i];
+         for(int k=1;k<=n-1;k++){
+            memset(t,0,sizeof(t));
+            t[0]=b[0]+mid[0]-1;
+            for(int i=1;i<=b[0];i++){
+                  for(int j=1;j<=mid[0];j++){
+                     t[i+j-1]+=b[i]*mid[j];
+                     t[i+j]+=t[i+j-1]/10;
+                     t[i+j-1]%=10;
+                  }
+            }
+            while(t[t[0]+1]>0) t[0]++;
+            for(int i=0;i<=t[0];i++) b[i]=t[i];
+         }
+      }
+      
+      void div(){
+         int r=0;
+         for(int i=mid[0];i>0;i--){
+            r=r*10+mid[i];
+            mid[i]=r/2;
+            r%=2;
+         }
+         while(mid[mid[0]]==0) mid[0]--;
+      }
+      
+      void left(){
+         for(int i=0;i<=mid[0];i++) l[i]=ans[i]=mid[i];
+         l[1]++;
+         for(int i=1;i<=l[0];i++){
+            l[i+1]+=l[i]/10;
+            l[i]%=10;
+         }
+      }
+      
+      void right(){
+         for(int i=0;i<=mid[0];i++) r[i]=mid[i];
+         r[1]--;
+         for(int i=1;i<=r[0];i++){
+            if(r[i]<0){
+                  r[i+1]--;			
+                  r[i]+=10;
+            }
+         }
+      }
+      
+      int main(){
+         scanf("%d\n",&n);
+         scanf("%s",s1+1);
+         a[0]=r[0]=strlen(s1+1);
+         for(int i=1;i<=a[0];i++) a[i]=r[i]=s1[a[0]-i+1]-'0';
+         l[0]=ans[0]=1;
+         while(compare(l,r)){
+            add();
+            div();
+            times();
+            if(compare(t,a)) left();
+            else right();
+         }
+         for(int i=ans[0];i>0;i--) printf("%d",ans[i]);
+         return 0;
+      }
     ```
